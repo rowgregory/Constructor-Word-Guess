@@ -1,7 +1,5 @@
 var input = process.argv[2];
 
-
-
 let Letter = function(letter) {
     this.letter = letter,
     this.letterGuessed = false,
@@ -12,17 +10,13 @@ let Letter = function(letter) {
             return "_";   
         } else {
             return this.letter;
-        }
-        
+        }  
     }
     this.charCheck = function(guess) {
         if (guess === this.letter) {
         this.letterGuessed = true;
-        
-        }
-        
-    }
-    
+        } 
+    } 
 }
 
 let letterTest = new Letter(input);
