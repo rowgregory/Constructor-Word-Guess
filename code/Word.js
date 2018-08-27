@@ -7,6 +7,7 @@ let Word = function (word) {
   this.underscores = [];
   this.splitName = function () {
     this.letters = this.word.split('');
+    //log(this.letters);
     numberOfUnderscores = this.letters.length;
     for (i = 0; i < numberOfUnderscores; i++) {
       this.underscores.push('_');
