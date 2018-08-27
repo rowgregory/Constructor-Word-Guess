@@ -1,37 +1,25 @@
 const Letter = require("./Letter.js");
-
+const log = console.log;
 let Word = function (word) {
 
-  this.constructWord = function (word) {
-    var temp = [];
-    for (var i = 0; i < word.length; i++) {
-      var currentChar = word[i];
-      var currentLetter = new Letter(currentChar);
-      temp.push(currentLetter);
+  this.word = word;
+  this.letters = [];
+  this.underscores = [];
+  this.splitName = function () {
+    this.letters = this.word.split('');
+    numberOfUnderscores = this.letters.length;
+    for (i = 0; i < numberOfUnderscores; i++) {
+      this.underscores.push('_');
     }
-    return temp;
-  }
-
-  this.word = this.constructWord(word);
-
-  this.display = function () {
-    var displayWord = "";
-    for (var i = 0; i < this.word.length; i++) {
-      var currentLetter = this.word[i];
-      displayWord += currentLetter.display() + " ";
+    log(this.underscores.join(' '));
+  };
+  this.genLtrs = function () {
+    for (i = 0; i < this.letters.length; i++) {
+      this.letters[i] = new Letter(this.letters[i]);
+      this.letters[i].getChar();
     }
-    //console.log(displayWord);
   }
-  this.checkLetter = function (ltr) {
+};
 
-    for (var i = 0; i < this.word.length; i++) {
-      var currentLetter = this.word[i];
-      //console.log(currentLetter);
-      currentLetter.checkGuess(ltr);
-    }
-    return this.display;
-  }
-
-}
 
 module.exports = Word;
