@@ -21,7 +21,7 @@ let blanksFilledIn = 0;
 
 let wins = 0;
 let losses = 0;
-let chancesRemaining = 4;
+let chancesRemaining = 10;
 
 
 const wordBank = [
@@ -38,21 +38,23 @@ const wordBank = [
   "nemesis"
 ];
 
-let counter = 0;
-let userGuess = "";
-let gameOver = false;
 
-figlet('Word Guess Game', function (err, data) {
+let userGuess = "";
+
+
+figlet.text('Word Guess Game', {
+  font: 'Lil Devil',
+}, function (err, data) {
 
   if (err) {
     console.log('Something went wrong...');
     console.dir(err);
     return;
   }
-  log(data.rainbow);
-  // log(cliSpinners.smiley);
-  log(chalk.green.bold('Welcome to Gregs Hangman'));
-  log(boxen('The theme is Greek Gods'));
+  log(data.white);
+
+  log(colors.red.bold('Welcome to Gregs Word Guess'));
+  log(chalk.yellow.bold('The theme is GREEK GOODS'));
 
   confStart();
 
@@ -68,7 +70,7 @@ const confStart = () => {
   {
     type: 'confirm',
     name: 'readyToPlay',
-    message: 'Are you ready to play Gregs Word Guess Game?',
+    message: 'Are you ready to challenge the Gods?',
     default: true
   }
   ];
@@ -88,11 +90,10 @@ const confStart = () => {
 
 const startGame = () => {
 
-  let chancesRemaining = 4;
+  let chancesRemaining = 10;
   guessedLttrs = "";
   guessedLttrsArr = [];
   chooseRandGod();
-
 }
 
 const chooseRandGod = () => {
@@ -104,7 +105,7 @@ const chooseRandGod = () => {
   //log(otherGod);
 
   log(`The name you are guessing contains ${randGod.length} letters!`);
-  log(`Name to guess: `);
+  log(`God to guess: `);
   //log(otherGod);
   otherGod.splitName();
   otherGod.genLtrs();
@@ -117,7 +118,6 @@ const guessLttr = () => {
       {
         name: 'letter',
         message: 'Guess a letter',
-
         // this section checks if the value is a letter
         // npm isLetter
         validate: function (value) {
@@ -132,28 +132,33 @@ const guessLttr = () => {
       guess.letter;
       // log(`You have guessed: ${guess.letter.toUpperCase()}`)
       userGuessedCorrectly = false;
-
+      // this finds out if the letter chosen was already guessed
       if (guessedLttrs.indexOf(guess.letter) > -1) {
-        log(`SORRY, you have already guessed that letter!`);
-        log(`~~++~~      ~~++~~      ~~++~~      ~~++~~      `)
+        // this prompts the use to enter another letter if it has already been guessed
+        log(figlet.textSync(`letter already guessed`, {
+          font: 'Stick Letters',
+        }));
+        log(`~~++~~      ~~++~~      ~~++~~      ~~++~~      `);
+        // fires guess letter prompt
         guessLttr();
       }
-
+      //  this controls what happens if the user has pressed a letter that has not already been guessed
       else if (guessedLttrsArr.indexOf(guess.letter) === -1) {
+        //adds a letter to the guessed letters
         guessedLttrs = guessedLttrs.concat(" " + guess.letter);
         guessedLttrsArr.push(guess.letter);
-
+        // displays the already guessed leters
         log(boxen('Letters you have already guessed: ' + guessedLttrs, {
           padding: 1, margin: 1, borderStyle: 'round'
         }));
 
-
+        // this determines whether or not the letter is in the word
         for (i = 0; i < otherGod.letters.length; i++) {
 
-          //log(otherGod.letters[i].character);
-
-          // This section determines if the user guess equals one of the letters or characters in the name, as well as determines if the letters or characters in name equal lettersGuessedCorrectly, if not lettersGuessedCorrectly false and the user loses a guess.
+          // This section determines if the user guess equals one of the letters or characters in the name, as well as determines if the letters or characters in name equal lettersGuessed, if not lettersGuessed false and the user loses a guess.
           if (guess.letter.toUpperCase() === otherGod.letters[i].character && otherGod.letters[i].letterGuessed === false) {
+
+            //sets letterGuessed for that specific letter equal to true
             otherGod.letters[i].letterGuessed === true;
             userGuessedCorrectly = true;
             otherGod.underscores[i] = guess.letter;
@@ -161,18 +166,24 @@ const guessLttr = () => {
           }
         }
 
-        log(`Name to guess: `);
-        log(otherGod.underscores.join(' '));
+        log(`God to guess: `);
+        log(boxen(otherGod.underscores.join(' '), {
+          padding: 2,
+        }));
         // otherGod.splitName();
         // otherGod.genLtrs();
 
         if (userGuessedCorrectly) {
-          log(`Correct!`);
+          log(figlet.textSync(`Correct!`, {
+            font: 'Dancing Font',
+          }));
           checkIfUserWon();
         }
         else {
-          log(chalk.cyan.bold(logSymbols.error, `Incorrect`));
-          log(`<^> | <^>`);
+          log(figlet.textSync(`Incorrect`, {
+            font: 'Poison',
+
+          }));
           chancesRemaining--;
           log(`You still have ${chancesRemaining} guesses left`);
           checkIfUserWon();
@@ -181,6 +192,7 @@ const guessLttr = () => {
     });
   }
 }
+
 const checkIfUserWon = () => {
   if (chancesRemaining === 0) {
     log(chalk.magenta.bold(`Sorry, better luck next time!`));
@@ -191,7 +203,7 @@ const checkIfUserWon = () => {
     playAgain();
   }
   else if (blanksFilledIn === otherGod.letters.length) {
-    log(`You Won!`);
+    log(colors.rainbow(`Good Job! You sure know your greek gods!`));
     wins++;
     playAgain();
   }
@@ -202,19 +214,16 @@ const checkIfUserWon = () => {
 
 const playAgain = () => {
   var readyToPlayAgain = [{
-
     type: 'confirm',
     name: 'readyToPlay',
-    message: 'Are you ready to play Gregs Word Guess Game again?',
+    message: 'Would you like to try to guess another god?',
     default: true
-  }
-  ];
+  }];
 
   inq.prompt(readyToPlayAgain).then(answers => {
 
     if (answers.readyToPlay) {
       startGame();
-
     }
     else {
       log(colors.zebra(`I'm sorry you don't want to play again ${answers.playerName}, come back soon!`));

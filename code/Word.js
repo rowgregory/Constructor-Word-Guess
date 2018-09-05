@@ -1,5 +1,7 @@
 const Letter = require("./Letter.js");
 const log = console.log;
+const chalk = require('chalk');
+const boxen = require('boxen');
 let Word = function (word) {
 
   this.word = word;
@@ -12,7 +14,9 @@ let Word = function (word) {
     for (i = 0; i < numberOfUnderscores; i++) {
       this.underscores.push('_');
     }
-    log(this.underscores.join(' '));
+    log(boxen(this.underscores.join(' '), {
+      padding: 2,
+    }));
   };
   this.genLtrs = function () {
     for (i = 0; i < this.letters.length; i++) {
