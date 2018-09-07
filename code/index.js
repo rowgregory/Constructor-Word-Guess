@@ -225,7 +225,7 @@ const playAgain = () => {
       startGame();
     }
     else {
-      log(colors.zebra(`I'm sorry you don't want to play again ${answers.playerName}, come back soon!`));
+      log(colors.zebra(`I'm sorry you don't want to play again ${playerName}, come back soon!`));
     }
   })
 }
