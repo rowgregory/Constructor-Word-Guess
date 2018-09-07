@@ -4,7 +4,6 @@ const chalk = require('chalk');
 const figlet = require('figlet');
 const isLetter = require('is-letter');
 const boxen = require('boxen');
-const logSymbols = require('log-symbols');
 const colors = require('colors');
 
 
